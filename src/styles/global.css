@@ -223,12 +223,12 @@ p {
 .btn--outline-light {
   border: 2px solid rgba(255, 255, 255, 0.7);
   color: var(--color-white);
-  background: transparent;
+  background: rgba(44, 36, 22, 0.4); /* solid fallback — visible even if hero bg fails */
 }
 
 .btn--outline-light:hover {
   border-color: var(--color-accent);
-  background: rgba(201, 169, 110, 0.15);
+  background: rgba(201, 169, 110, 0.25);
   transform: translateY(-2px);
 }
 
