@@ -247,6 +247,17 @@ p {
   transform: translateY(-2px);
 }
 
+.btn--insta {
+  background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: var(--color-white);
+  border: none;
+}
+
+.btn--insta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(188, 24, 136, 0.35);
+}
+
 /* ============================================
    REVEAL ANIMATION (safe fallback)
    ============================================ */

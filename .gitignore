@@ -3,10 +3,5 @@ dist/
 .astro/
 .vite/
 bash.exe.stackdump
-PROMPT.md
-_checkpoint.json
-lead-data.json
-brief.json
-design-suggestion.json
-competition-analysis.json
-outreach.json
+_lead-data/
+.hermes-tmp*/
