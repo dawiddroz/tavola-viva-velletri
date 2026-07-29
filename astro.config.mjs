@@ -1,7 +1,8 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://tavolaviva.it',
+  site: 'https://dawiddroz.github.io',
+  base: '/tavola-viva-velletri',
   server: {
     allowedHosts: true,
   },
