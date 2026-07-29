@@ -264,13 +264,21 @@
 }
 
 .menu__card {
-  background: rgba(255, 255, 255, 0.09);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(201, 169, 110, 0.2);
+  background: rgba(47, 62, 43, 0.55);
+  border: 1px solid rgba(201, 169, 110, 0.25);
   border-radius: var(--radius-lg);
   padding: var(--space-4);
   transition: all var(--transition-base);
+}
+
+/* Backdrop-filter only where supported (desktop) */
+@supports (backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px)) {
+  .menu__card {
+    background: rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(201, 169, 110, 0.2);
+  }
 }
 
 .menu__card:hover {
