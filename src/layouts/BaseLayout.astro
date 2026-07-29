@@ -63,6 +63,15 @@ const {
       "reviewCount": "27"
     }
   })} />
+
+  <!-- No-JS fallback: show all content if JS disabled -->
+  <noscript>
+    <style>
+      .reveal, .hero__eyebrow, .hero__title, .hero__subtitle, .hero__actions,
+      .hero__actions .btn, .menu__card, .gallery__item, .review-card,
+      .instagram-banner__card { opacity: 1 !important; transform: none !important; }
+    </style>
+  </noscript>
 </head>
 <body>
   <!-- Progress bar -->
@@ -245,12 +254,13 @@ const {
         });
       }
 
-      // Hero animations — use fromTo() for safety
+      // Hero animations — CSS sets initial state (opacity:0, translateY), GSAP reveals
       const heroTL = gsap.timeline({ delay: 0.2 });
-      heroTL.fromTo('.hero__eyebrow', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' })
-             .fromTo('.hero__title', { yPercent: 50, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 1.0, ease: 'power4.out' }, '-=0.5')
-             .fromTo('.hero__subtitle', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.5')
-             .fromTo('.hero__actions .btn', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power2.out' }, '-=0.4');
+      heroTL.to('.hero__eyebrow', { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' })
+             .to('.hero__title', { yPercent: 0, opacity: 1, duration: 1.0, ease: 'power4.out' }, '-=0.5')
+             .to('.hero__subtitle', { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.5')
+             .to('.hero__actions', { opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.4')
+             .to('.hero__actions .btn', { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power2.out' }, '-=0.3');
 
       // Scroll reveal — uses onEnter so elements are visible by default
       if (typeof ScrollTrigger !== 'undefined') {
@@ -311,6 +321,12 @@ const {
 
       // GSAP runs after a tiny delay to ensure CDN scripts are ready
       setTimeout(initGSAP, 100);
+
+      // Safety net: if GSAP hasn't fired after 4s, show everything
+      setTimeout(() => {
+        const els = document.querySelectorAll('.reveal, .hero__eyebrow, .hero__title, .hero__subtitle, .hero__actions, .hero__actions .btn, .menu__card, .gallery__item, .review-card, .instagram-banner__card');
+        els.forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+      }, 4000);
     });
   </script>
 </body>

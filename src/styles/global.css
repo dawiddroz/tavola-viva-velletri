@@ -259,12 +259,31 @@ p {
 }
 
 /* ============================================
-   REVEAL ANIMATION (safe fallback)
+   REVEAL ANIMATION (hidden by default, GSAP reveals)
    ============================================ */
 
 .reveal {
-  opacity: 1;
-  transform: none;
+  opacity: 0; /* hidden until GSAP scroll reveal */
+}
+
+/* Menu cards — hidden until stagger animation */
+.menu__card {
+  opacity: 0;
+}
+
+/* Gallery items — hidden until stagger animation */
+.gallery__item {
+  opacity: 0;
+}
+
+/* Review cards — hidden until stagger animation */
+.review-card {
+  opacity: 0;
+}
+
+/* Instagram banner card */
+.instagram-banner__card {
+  opacity: 0;
 }
 
 /* ============================================
