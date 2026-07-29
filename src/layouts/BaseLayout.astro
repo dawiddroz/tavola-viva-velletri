@@ -77,109 +77,13 @@ const {
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 
-  <!-- Site animations -->
-  <script type="module">
-    // Wait for everything to load
-    window.addEventListener('load', () => {
+  <!-- Lenis via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.13/dist/lenis.min.js" defer></script>
 
-      // ===== Smooth scroll (Lenis-like via requestAnimationFrame) =====
-      if (typeof Lenis !== 'undefined') {
-        const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
-        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-        requestAnimationFrame(raf);
-        if (typeof ScrollTrigger !== 'undefined') {
-          lenis.on('scroll', ScrollTrigger.update);
-        }
-      }
-
-      // ===== Guard: GSAP must be loaded =====
-      if (typeof gsap === 'undefined') return;
-
-      if (typeof ScrollTrigger !== 'undefined') {
-        gsap.registerPlugin(ScrollTrigger);
-      }
-
-      // ===== Scroll Reveal =====
-        gsap.utils.toArray('.reveal').forEach(el => {
-          // Skip hero elements (they have dedicated animations)
-          if (el.closest('#hero')) return;
-          gsap.from(el, {
-            scrollTrigger: { trigger: el, start: 'top 85%' },
-            y: 40, opacity: 0, duration: 0.7, ease: 'power2.out'
-          });
-        });
-
-      // ===== Navbar scroll state =====
-      if (typeof ScrollTrigger !== 'undefined') {
-        ScrollTrigger.create({
-          start: 'top -100',
-          onEnter: () => document.querySelector('.navbar')?.classList.add('scrolled'),
-          onLeaveBack: () => document.querySelector('.navbar')?.classList.remove('scrolled')
-        });
-      }
-
-      // ===== Progress bar =====
-      gsap.to('.progress-bar', {
-        scaleX: 1,
-        transformOrigin: 'left center',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: document.body,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 0.5
-        }
-      });
-
-      // ===== Hero mask reveal =====
-        const heroTitle = document.querySelector('.hero__title');
-        if (heroTitle) {
-          gsap.from(heroTitle, {
-            yPercent: 100,
-            opacity: 0,
-            duration: 1.2,
-            ease: 'power4.out',
-            delay: 0.3
-          });
-        }
-        const heroEyebrow = document.querySelector('.hero__eyebrow');
-        if (heroEyebrow) {
-          gsap.from(heroEyebrow, { y: 20, opacity: 0, duration: 0.8, delay: 0.1 });
-        }
-        const heroSubtitle = document.querySelector('.hero__subtitle');
-        if (heroSubtitle) {
-          gsap.from(heroSubtitle, { y: 20, opacity: 0, duration: 0.8, delay: 0.5 });
-        }
-        const heroActions = document.querySelectorAll('.hero__actions .btn');
-        if (heroActions.length) {
-          gsap.from(heroActions, { y: 20, opacity: 0, duration: 0.6, stagger: 0.1, delay: 0.7 });
-        }
-
-      // ===== Menu stagger =====
-      if (typeof ScrollTrigger !== 'undefined') {
-        gsap.from('.menu__card', {
-          scrollTrigger: { trigger: '.menu__grid', start: 'top 80%' },
-          y: 30, opacity: 0, duration: 0.5, stagger: 0.12, ease: 'power2.out'
-        });
-      }
-
-      // ===== Gallery stagger =====
-      if (typeof ScrollTrigger !== 'undefined') {
-        gsap.from('.gallery__item', {
-          scrollTrigger: { trigger: '.gallery__grid', start: 'top 80%' },
-          scale: 0.8, opacity: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out'
-        });
-      }
-
-      // ===== Review cards stagger =====
-      if (typeof ScrollTrigger !== 'undefined') {
-        gsap.from('.review-card', {
-          scrollTrigger: { trigger: '.reviews__grid', start: 'top 80%' },
-          y: 30, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out'
-        });
-      }
-
-      // ===== Counter animation (independent of GSAP) =====
+  <!-- Site animations — bulletproof: content visible by default, JS only enhances -->
+  <script>
+    // ===== Counter animation (no dependencies, runs immediately) =====
+    function initCounters() {
       document.querySelectorAll('[data-counter]').forEach(el => {
         const target = parseFloat(el.dataset.counter);
         const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals) : 0;
@@ -203,8 +107,10 @@ const {
         }, { threshold: 0.5 });
         observer.observe(el);
       });
+    }
 
-      // ===== Mobile menu toggle =====
+    // ===== Mobile menu toggle (no dependencies) =====
+    function initMobileMenu() {
       const toggle = document.querySelector('.navbar__toggle');
       const mobileMenu = document.querySelector('.mobile-menu');
       if (toggle && mobileMenu) {
@@ -221,30 +127,10 @@ const {
           });
         });
       }
+    }
 
-      // ===== Leaflet map =====
-      if (typeof L !== 'undefined') {
-        const mapEl = document.getElementById('map');
-        if (mapEl) {
-          const map = L.map('map', {
-            scrollWheelZoom: false,
-            zoomControl: true
-          }).setView([41.6876185, 12.7781205], 16);
-
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors',
-            maxZoom: 19
-          }).addTo(map);
-
-          const marker = L.marker([41.6876185, 12.7781205]).addTo(map);
-          marker.bindPopup('<strong>Tavola viva di Federico Bastianelli</strong><br>Via del Comune, 22, 00049 Velletri RM<br>Tel: 346 414 4878').openPopup();
-
-          // Enable scroll zoom on click
-          mapEl.addEventListener('click', () => map.scrollWheelZoom.enable());
-        }
-      }
-
-      // ===== Contact form (WhatsApp redirect) =====
+    // ===== Contact form (no dependencies) =====
+    function initForm() {
       const form = document.getElementById('contact-form');
       if (form) {
         form.addEventListener('submit', (e) => {
@@ -272,17 +158,19 @@ const {
           form.reset();
         });
       }
+    }
 
-      // ===== Lightbox =====
+    // ===== Lightbox (no dependencies) =====
+    function initLightbox() {
       const lightbox = document.querySelector('.lightbox');
       const lightboxImg = document.querySelector('.lightbox__img');
       const lightboxClose = document.querySelector('.lightbox__close');
 
       document.querySelectorAll('.gallery__item').forEach(item => {
         item.addEventListener('click', () => {
-          const bg = item.querySelector('.gallery__item-inner');
-          if (bg && lightbox && lightboxImg) {
-            lightboxImg.src = bg.style.backgroundImage.slice(5, -2).replace(/^["']|["']$/g, '');
+          const img = item.querySelector('img');
+          if (img && lightbox && lightboxImg) {
+            lightboxImg.src = img.src;
             lightbox.classList.add('active');
           }
         });
@@ -294,15 +182,136 @@ const {
           if (e.target === lightbox) lightbox.classList.remove('active');
         });
       }
+    }
 
-      // ===== ScrollTrigger refresh after images load =====
+    // ===== Leaflet map (depends on Leaflet) =====
+    function initMap() {
+      if (typeof L === 'undefined') return;
+      const mapEl = document.getElementById('map');
+      if (!mapEl) return;
+
+      const map = L.map('map', {
+        scrollWheelZoom: false,
+        zoomControl: true
+      }).setView([41.6876185, 12.7781205], 16);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19
+      }).addTo(map);
+
+      const marker = L.marker([41.6876185, 12.7781205]).addTo(map);
+      marker.bindPopup('<strong>Tavola viva di Federico Bastianelli</strong><br>Via del Comune, 22, 00049 Velletri RM<br>Tel: 346 414 4878').openPopup();
+
+      mapEl.addEventListener('click', () => map.scrollWheelZoom.enable());
+    }
+
+    // ===== GSAP animations (depends on GSAP + ScrollTrigger) =====
+    function initGSAP() {
+      if (typeof gsap === 'undefined') return;
       if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // Smooth scroll (Lenis)
+      if (typeof Lenis !== 'undefined') {
+        const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        if (typeof ScrollTrigger !== 'undefined') {
+          lenis.on('scroll', ScrollTrigger.update);
+        }
+      }
+
+      // Navbar scroll state
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.create({
+          start: 'top -100',
+          onEnter: () => document.querySelector('.navbar')?.classList.add('scrolled'),
+          onLeaveBack: () => document.querySelector('.navbar')?.classList.remove('scrolled')
+        });
+
+        // Progress bar
+        gsap.to('.progress-bar', {
+          scaleX: 1,
+          transformOrigin: 'left center',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: document.body,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.5
+          }
+        });
+      }
+
+      // Hero animations — use from() but ONLY on elements that have CSS fallback opacity:1
+      const heroTL = gsap.timeline({ delay: 0.2 });
+      heroTL.from('.hero__eyebrow', { y: 20, opacity: 0, duration: 0.8, ease: 'power2.out' })
+             .from('.hero__title', { yPercent: 50, opacity: 0, duration: 1.0, ease: 'power4.out' }, '-=0.5')
+             .from('.hero__subtitle', { y: 20, opacity: 0, duration: 0.8, ease: 'power2.out' }, '-=0.5')
+             .from('.hero__actions .btn', { y: 20, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out' }, '-=0.4');
+
+      // Scroll reveal — uses onEnter so elements are visible by default
+      if (typeof ScrollTrigger !== 'undefined') {
+        // Generic reveal
+        gsap.utils.toArray('.reveal').forEach(el => {
+          if (el.closest('#hero')) return;
+          ScrollTrigger.create({
+            trigger: el,
+            start: 'top 85%',
+            onEnter: () => {
+              gsap.fromTo(el, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' });
+            },
+            onLeaveBack: () => {
+              gsap.set(el, { opacity: 1, y: 0 });
+            }
+          });
+        });
+
+        // Menu stagger
+        ScrollTrigger.create({
+          trigger: '.menu__grid',
+          start: 'top 80%',
+          onEnter: () => {
+            gsap.fromTo('.menu__card', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.12, ease: 'power2.out' });
+          }
+        });
+
+        // Gallery stagger
+        ScrollTrigger.create({
+          trigger: '.gallery__grid',
+          start: 'top 80%',
+          onEnter: () => {
+            gsap.fromTo('.gallery__item', { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out' });
+          }
+        });
+
+        // Review stagger
+        ScrollTrigger.create({
+          trigger: '.reviews__grid',
+          start: 'top 80%',
+          onEnter: () => {
+            gsap.fromTo('.review-card', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out' });
+          }
+        });
+
         ScrollTrigger.refresh();
       }
+    }
+
+    // ===== Run everything on DOMContentLoaded (don't wait for images) =====
+    document.addEventListener('DOMContentLoaded', () => {
+      // These run immediately — no dependencies
+      initCounters();
+      initMobileMenu();
+      initForm();
+      initLightbox();
+      initMap();
+
+      // GSAP runs after a tiny delay to ensure CDN scripts are ready
+      setTimeout(initGSAP, 100);
     });
   </script>
-
-  <!-- Lenis via CDN (before module script) -->
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.13/dist/lenis.min.js" defer></script>
 </body>
 </html>
