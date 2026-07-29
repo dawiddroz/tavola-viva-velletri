@@ -1,0 +1,27 @@
+{
+  "business_name": "Tavola viva di Federico Bastianelli",
+  "slug": "tavola-viva-federico-bastianelli",
+  "category": "Ristorante",
+  "address": "Via del Comune, 22, 00049 Velletri RM",
+  "phone": "346 414 4878",
+  "city": "Velletri",
+  "region": "Lazio",
+  "description": "Ristorante intimo nel cuore di Velletri. Cucina tradizionale italiana reinterpretata con creatività. Ingredienti freschi e stagionali.",
+  "keywords": [
+    "Tavola viva di Federico Bastianelli",
+    "Ristorante",
+    "Velletri",
+    "Castelli Romani",
+    "Roma"
+  ],
+  "brand_tone": "professionale, moderno, italiano",
+  "services": [],
+  "social_links": {
+    "instagram": "instagram.com/ristorantetavolaviva_velletri",
+    "facebook": "facebook.com/Tavola viva"
+  },
+  "created": "2026-07-29T14:38:15.927294",
+  "rating": 4.9,
+  "reviews_count": 27,
+  "price_range": "20-30€"
+}

@@ -1,0 +1,38 @@
+{
+  "name": "Tavola viva di Federico Bastianelli",
+  "category": "Ristorante",
+  "category_weight": 1.4,
+  "priority": "ALTA",
+  "address": "Via del Comune, 22, 00049 Velletri RM",
+  "phone": "346 414 4878",
+  "rating": 4.9,
+  "reviews_count": 27,
+  "has_website": false,
+  "website_url": null,
+  "price_range": "20-30€",
+  "social": {
+    "facebook": "facebook.com/Tavola viva",
+    "instagram": "instagram.com/ristorantetavolaviva_velletri",
+    "tiktok": null,
+    "instagram_data": {
+      "bio": "La tavola è viva quando è condivisa\nChef & owner @federico.bastianelli.9 \nVia del comune, 22\nVelletri RM\nApertura **\\/04\\/26",
+      "followers": 3700,
+      "following": 3408,
+      "posts": 33,
+      "email": null,
+      "phone": null
+    }
+  },
+  "booking_platforms": [
+    "Deliveroo"
+  ],
+  "description": "Ristorante intimo nel cuore di Velletri. Cucina tradizionale italiana reinterpretata con creatività. Ingredienti freschi e stagionali.",
+  "city": "Velletri",
+  "discovered_date": "2026-07-29T11:32:32.135092",
+  "data_source": "Google Search Knowledge Panel",
+  "verified": true,
+  "score": 77.6,
+  "status": "scored",
+  "notes": "IG 3.700 follower. Chef/owner @federico.bastianelli.9. Forte presenza social ma nessun sito.",
+  "score_label": "🟠 PRIORITÀ"
+}

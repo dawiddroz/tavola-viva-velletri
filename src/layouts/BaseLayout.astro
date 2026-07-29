@@ -1,0 +1,313 @@
+---
+import '../styles/global.css';
+import '../styles/navbar.css';
+import '../styles/sections.css';
+
+const businessName = "Tavola viva";
+const businessFull = "Tavola viva di Federico Bastianelli";
+
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Tavola viva di Federico Bastianelli | Ristorante a Velletri",
+  description = "Ristorante intimo nel cuore di Velletri. Cucina tradizionale italiana reinterpretata con creatività. Ingredienti freschi e stagionali. Prenota direttamente.",
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="generator" content={Astro.generator} />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="restaurant" />
+  <meta property="og:locale" content="it_IT" />
+
+  <!-- Google Fonts: Playfair Display + Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Structured Data: Restaurant -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": businessFull,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Via del Comune, 22",
+      "addressLocality": "Velletri",
+      "postalCode": "00049",
+      "addressRegion": "RM",
+      "addressCountry": "IT"
+    },
+    "telephone": "+393464144878",
+    "priceRange": "€€",
+    "servesCuisine": "Italian",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "27"
+    }
+  })} />
+</head>
+<body>
+  <!-- Progress bar -->
+  <div class="progress-bar" aria-hidden="true"></div>
+
+  <slot />
+
+  <!-- GSAP + ScrollTrigger via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+
+  <!-- Site animations -->
+  <script type="module">
+    // Wait for everything to load
+    window.addEventListener('load', () => {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ===== Smooth scroll (Lenis-like via requestAnimationFrame) =====
+      if (!prefersReduced && typeof Lenis !== 'undefined') {
+        const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        if (typeof ScrollTrigger !== 'undefined') {
+          lenis.on('scroll', ScrollTrigger.update);
+        }
+      }
+
+      // ===== Guard: GSAP must be loaded =====
+      if (typeof gsap === 'undefined') return;
+
+      if (typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+
+      // ===== Scroll Reveal =====
+      if (!prefersReduced) {
+        gsap.utils.toArray('.reveal').forEach(el => {
+          // Skip hero elements (they have dedicated animations)
+          if (el.closest('#hero')) return;
+          gsap.from(el, {
+            scrollTrigger: { trigger: el, start: 'top 85%' },
+            y: 40, opacity: 0, duration: 0.7, ease: 'power2.out'
+          });
+        });
+      }
+
+      // ===== Navbar scroll state =====
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.create({
+          start: 'top -100',
+          onEnter: () => document.querySelector('.navbar')?.classList.add('scrolled'),
+          onLeaveBack: () => document.querySelector('.navbar')?.classList.remove('scrolled')
+        });
+      }
+
+      // ===== Progress bar =====
+      gsap.to('.progress-bar', {
+        scaleX: 1,
+        transformOrigin: 'left center',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: document.body,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.5
+        }
+      });
+
+      // ===== Hero mask reveal =====
+      if (!prefersReduced) {
+        const heroTitle = document.querySelector('.hero__title');
+        if (heroTitle) {
+          gsap.from(heroTitle, {
+            yPercent: 100,
+            opacity: 0,
+            duration: 1.2,
+            ease: 'power4.out',
+            delay: 0.3
+          });
+        }
+        const heroEyebrow = document.querySelector('.hero__eyebrow');
+        if (heroEyebrow) {
+          gsap.from(heroEyebrow, { y: 20, opacity: 0, duration: 0.8, delay: 0.1 });
+        }
+        const heroSubtitle = document.querySelector('.hero__subtitle');
+        if (heroSubtitle) {
+          gsap.from(heroSubtitle, { y: 20, opacity: 0, duration: 0.8, delay: 0.5 });
+        }
+        const heroActions = document.querySelectorAll('.hero__actions .btn');
+        if (heroActions.length) {
+          gsap.from(heroActions, { y: 20, opacity: 0, duration: 0.6, stagger: 0.1, delay: 0.7 });
+        }
+      }
+
+      // ===== Menu stagger =====
+      if (!prefersReduced && typeof ScrollTrigger !== 'undefined') {
+        gsap.from('.menu__card', {
+          scrollTrigger: { trigger: '.menu__grid', start: 'top 80%' },
+          y: 30, opacity: 0, duration: 0.5, stagger: 0.12, ease: 'power2.out'
+        });
+      }
+
+      // ===== Gallery stagger =====
+      if (!prefersReduced && typeof ScrollTrigger !== 'undefined') {
+        gsap.from('.gallery__item', {
+          scrollTrigger: { trigger: '.gallery__grid', start: 'top 80%' },
+          scale: 0.8, opacity: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out'
+        });
+      }
+
+      // ===== Review cards stagger =====
+      if (!prefersReduced && typeof ScrollTrigger !== 'undefined') {
+        gsap.from('.review-card', {
+          scrollTrigger: { trigger: '.reviews__grid', start: 'top 80%' },
+          y: 30, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out'
+        });
+      }
+
+      // ===== Counter animation (independent of GSAP) =====
+      document.querySelectorAll('[data-counter]').forEach(el => {
+        const target = parseFloat(el.dataset.counter);
+        const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals) : 0;
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const start = performance.now();
+              const duration = 2000;
+              function tick() {
+                const elapsed = performance.now() - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const value = target * easeOut;
+                el.textContent = decimals > 0 ? value.toFixed(decimals) : Math.round(value);
+                if (progress < 1) requestAnimationFrame(tick);
+              }
+              tick();
+              observer.unobserve(el);
+            }
+          });
+        }, { threshold: 0.5 });
+        observer.observe(el);
+      });
+
+      // ===== Mobile menu toggle =====
+      const toggle = document.querySelector('.navbar__toggle');
+      const mobileMenu = document.querySelector('.mobile-menu');
+      if (toggle && mobileMenu) {
+        toggle.addEventListener('click', () => {
+          toggle.classList.toggle('active');
+          mobileMenu.classList.toggle('active');
+          document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+        mobileMenu.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            toggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+          });
+        });
+      }
+
+      // ===== Leaflet map =====
+      if (typeof L !== 'undefined') {
+        const mapEl = document.getElementById('map');
+        if (mapEl) {
+          const map = L.map('map', {
+            scrollWheelZoom: false,
+            zoomControl: true
+          }).setView([41.6876185, 12.7781205], 16);
+
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors',
+            maxZoom: 19
+          }).addTo(map);
+
+          const marker = L.marker([41.6876185, 12.7781205]).addTo(map);
+          marker.bindPopup('<strong>Tavola viva di Federico Bastianelli</strong><br>Via del Comune, 22, 00049 Velletri RM<br>Tel: 346 414 4878').openPopup();
+
+          // Enable scroll zoom on click
+          mapEl.addEventListener('click', () => map.scrollWheelZoom.enable());
+        }
+      }
+
+      // ===== Contact form (WhatsApp redirect) =====
+      const form = document.getElementById('contact-form');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const name = form.querySelector('[name="name"]')?.value || '';
+          const phone = form.querySelector('[name="phone"]')?.value || '';
+          const date = form.querySelector('[name="date"]')?.value || '';
+          const guests = form.querySelector('[name="guests"]')?.value || '';
+          const message = form.querySelector('[name="message"]')?.value || '';
+
+          let waMsg = `Prenotazione Tavola viva:%0A%0A`;
+          waMsg += `Nome: ${name}%0A`;
+          if (phone) waMsg += `Telefono: ${phone}%0A`;
+          if (date) waMsg += `Data: ${date}%0A`;
+          if (guests) waMsg += `Persone: ${guests}%0A`;
+          if (message) waMsg += `Messaggio: ${message}%0A`;
+
+          window.open(`https://wa.me/393464144878?text=${waMsg}`, '_blank');
+
+          const notice = form.querySelector('.form__notice');
+          if (notice) {
+            notice.classList.add('success');
+            notice.textContent = 'Ti stiamo reindirizzando a WhatsApp per completare la prenotazione...';
+          }
+          form.reset();
+        });
+      }
+
+      // ===== Lightbox =====
+      const lightbox = document.querySelector('.lightbox');
+      const lightboxImg = document.querySelector('.lightbox__img');
+      const lightboxClose = document.querySelector('.lightbox__close');
+
+      document.querySelectorAll('.gallery__item').forEach(item => {
+        item.addEventListener('click', () => {
+          const bg = item.querySelector('.gallery__item-inner');
+          if (bg && lightbox && lightboxImg) {
+            lightboxImg.src = bg.style.backgroundImage.slice(5, -2).replace(/^["']|["']$/g, '');
+            lightbox.classList.add('active');
+          }
+        });
+      });
+
+      if (lightboxClose && lightbox) {
+        lightboxClose.addEventListener('click', () => lightbox.classList.remove('active'));
+        lightbox.addEventListener('click', (e) => {
+          if (e.target === lightbox) lightbox.classList.remove('active');
+        });
+      }
+
+      // ===== ScrollTrigger refresh after images load =====
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.refresh();
+      }
+    });
+  </script>
+
+  <!-- Lenis via CDN (before module script) -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.13/dist/lenis.min.js" defer></script>
+</body>
+</html>

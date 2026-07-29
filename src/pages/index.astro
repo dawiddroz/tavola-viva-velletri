@@ -1,0 +1,441 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Business data from lead-data.json + brief.json
+const business = {
+  name: "Tavola viva di Federico Bastianelli",
+  shortName: "Tavola viva",
+  address: "Via del Comune, 22, 00049 Velletri RM",
+  phone: "346 414 4878",
+  phoneLink: "+393464144878",
+  rating: 4.9,
+  reviews: 27,
+  priceRange: "20-30€",
+  instagram: "https://instagram.com/ristorantetavolaviva_velletri",
+  facebook: "https://facebook.com/Tavola viva",
+  description: "Ristorante intimo nel cuore di Velletri. Cucina tradizionale italiana reinterpretata con creatività. Ingredienti freschi e stagionali.",
+  lat: 41.6876185,
+  lon: 12.7781205
+};
+
+// Real Unsplash food photos (stable CDN URLs)
+const photos = {
+  hero: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600&q=85&auto=format&fit=crop",
+  heroMobile: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80&auto=format&fit=crop",
+  about1: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=85&auto=format&fit=crop",
+  about2: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=600&q=85&auto=format&fit=crop",
+};
+
+const galleryImages = [
+  { file: "gallery-1.jpg", url: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=85&auto=format&fit=crop", label: "Pizza artigianale" },
+  { file: "gallery-2.jpg", url: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=500&q=85&auto=format&fit=crop", label: "Taglio di carne" },
+  { file: "gallery-3.jpg", url: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=500&q=85&auto=format&fit=crop", label: "Pasta fresca" },
+  { file: "gallery-4.jpg", url: "https://images.unsplash.com/photo-1559339352-11d035aa65cc?w=500&q=85&auto=format&fit=crop", label: "Il locale" },
+  { file: "gallery-5.jpg", url: "https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=500&q=85&auto=format&fit=crop", label: "Antipasto" },
+  { file: "gallery-6.jpg", url: "https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=500&q=85&auto=format&fit=crop", label: "Carta dei vini" },
+  { file: "gallery-7.jpg", url: "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=500&q=85&auto=format&fit=crop", label: "Lo chef" },
+  { file: "gallery-8.jpg", url: "https://images.unsplash.com/photo-1608219992759-8d74ed8d76eb?w=500&q=85&auto=format&fit=crop", label: "Carbonara" },
+];
+
+const menuItems = [
+  { name: "Antipasto della casa", desc: "Selezione di salumi e formaggi del territorio, verdure sott'olio e focaccia calda", price: "[DA INSERIRE]", tag: "Stagionale" },
+  { name: "Primi fatti a mano", desc: "Pasta fresca ogni giorno, condimenti che cambiano con le stagioni e la creatività dello chef", price: "[DA INSERIRE]", tag: "Fatto a mano" },
+  { name: "Secondi del territorio", desc: "Carne e pesce selezionati dai produttori locali, secondo disponibilità del mercato", price: "[DA INSERIRE]", tag: "A km 0" },
+  { name: "Menu degustazione", desc: "Percorso gastronomico completo: 5 portate che raccontano la tradizione dei Castelli Romani", price: "[DA INSERIRE]", tag: "Consigliato" },
+  { name: "Dolce della casa", desc: "Dolci tradizionali preparati ogni giorno. La pasticcera cambia ricetta ogni settimana", price: "[DA INSERIRE]", tag: "Settimanale" },
+  { name: "Vini dei Castelli", desc: "Selezione di vini locali: Frascati, Monteporzio, e piccole cantine artigianali del territorio", price: "[DA INSERIRE]", tag: "Enoteca" },
+];
+
+const reviews = [
+  { author: "Recensione Google ★★★★★", text: "\"Posto intimo e accogliente nel cuore di Velletri. La cucina è tradizionale ma con un tocco creativo che sorprende. Ingredienti freschissimi e servizio impeccabile.\"", stars: 5 },
+  { author: "Recensione Google ★★★★★", text: "\"Una scoperta bellissima. Lo chef mette passione in ogni piatto. Il menu degustazione vale ogni euro. Torneremo sicuramente.\"", stars: 5 },
+  { author: "Recensione Google ★★★★★", text: "\"Finalmente un ristorante a Velletri che non delude. Ambiente caldo, cibo eccellente. La pasta fresca è fatta a mano e si sente.\"", stars: 5 },
+];
+---
+
+<BaseLayout>
+  <!-- ====== NAVBAR ====== -->
+  <nav class="navbar">
+    <div class="navbar__inner">
+      <a href="#hero" class="navbar__brand">
+        Tavola viva
+        <span>Federico Bastianelli</span>
+      </a>
+      <ul class="navbar__links">
+        <li><a href="#about">Chi siamo</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#gallery">Galleria</a></li>
+        <li><a href="#reviews">Recensioni</a></li>
+        <li><a href="#contact">Contatti</a></li>
+      </ul>
+      <a href="#contact" class="btn btn--primary navbar__cta">Prenota</a>
+      <button class="navbar__toggle" aria-label="Apri menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu">
+    <a href="#about">Chi siamo</a>
+    <a href="#menu">Menu</a>
+    <a href="#gallery">Galleria</a>
+    <a href="#reviews">Recensioni</a>
+    <a href="#contact">Contatti</a>
+    <a href="#contact" class="btn btn--primary" style="margin-top: var(--space-2);">Prenota un tavolo</a>
+  </div>
+
+  <!-- ====== HERO ====== -->
+  <section class="hero" id="hero">
+    <div class="hero__bg" style={`background-image: url('${photos.hero}');`}></div>
+    <div class="hero__overlay"></div>
+    <div class="hero__pattern"></div>
+    <div class="hero__content">
+      <p class="hero__eyebrow">Ristorante · Velletri · Castelli Romani</p>
+      <div class="hero__mask">
+        <h1 class="hero__title">La tavola è viva<br><em>quando è condivisa</em></h1>
+      </div>
+      <p class="hero__subtitle">
+        Cucina tradizionale italiana reinterpretata con creatività.
+        Ingredienti freschi e stagionali nel cuore di Velletri.
+      </p>
+      <div class="hero__actions">
+        <a href="#contact" class="btn btn--primary btn--lg">Prenota un tavolo</a>
+        <a href="#menu" class="btn btn--outline-light">Scopri il menu</a>
+      </div>
+    </div>
+    <div class="hero__scroll">
+      <span class="hero__scroll-text">Scorri</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ====== CHI SIAMO ====== -->
+  <section class="section about" id="about">
+    <div class="container">
+      <div class="about__grid">
+        <div class="about__images reveal">
+          <div class="about__img">
+            <img src="/images/about-1.jpg" onerror={`this.src='${photos.about1}'`} alt="Interno del ristorante" loading="lazy" width="400" height="533" />
+          </div>
+          <div class="about__img">
+            <img src="/images/about-2.jpg" onerror={`this.src='${photos.about2}'`} alt="Lo chef in cucina" loading="lazy" width="400" height="533" />
+          </div>
+        </div>
+        <div class="about__text reveal">
+          <p class="eyebrow">La nostra storia</p>
+          <h2>Una cucina che<br>racconta il territorio</h2>
+          <p>
+            <strong>Tavola viva</strong> nasce dall'idea di <strong>Federico Bastianelli</strong>: 
+            portare in tavola la tradizione italiana dei Castelli Romani, reinterpretata con 
+            creatività e rispetto per gli ingredienti.
+          </p>
+          <p>
+            Ogni piatto racconta una storia. Ogni ingrediente è scelto con cura, 
+            seguendo i ritmi della natura e i produttori locali. La cucina è 
+            stagionale, autentica, viva — proprio come il nome del ristorante.
+          </p>
+          <p>
+            Un locale intimo, dove ogni cliente si sente a casa. Dove la tavola 
+            non è solo un pasto, ma un momento da condividere.
+          </p>
+          <div class="about__signature">— Federico Bastianelli, Chef & Owner</div>
+          <div class="about__tags" style="display: flex; gap: var(--space-1); margin-top: var(--space-3); flex-wrap: wrap;">
+            <span style="padding: 4px 12px; background: rgba(198,123,75,0.08); border-radius: var(--radius-full); font-size: 0.8rem; color: var(--color-primary); font-weight: 500;">Cucina tradizionale</span>
+            <span style="padding: 4px 12px; background: rgba(198,123,75,0.08); border-radius: var(--radius-full); font-size: 0.8rem; color: var(--color-primary); font-weight: 500;">A km 0</span>
+            <span style="padding: 4px 12px; background: rgba(198,123,75,0.08); border-radius: var(--radius-full); font-size: 0.8rem; color: var(--color-primary); font-weight: 500;">Ingredienti stagionali</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== MENU ====== -->
+  <section class="section menu" id="menu">
+    <div class="container">
+      <div class="menu__header reveal">
+        <p class="eyebrow">La carta</p>
+        <h2>Il nostro menu</h2>
+        <p>Piatti che cambiano con le stagioni. Ingredienti freschi ogni giorno.</p>
+      </div>
+      <div class="menu__grid">
+        {menuItems.map((item) => (
+          <div class="menu__card">
+            <div class="menu__card-header">
+              <h3 class="menu__card-title">{item.name}</h3>
+              <span class="menu__card-price">{item.price}</span>
+            </div>
+            <p class="menu__card-desc">{item.desc}</p>
+            <span class="menu__card-tag">{item.tag}</span>
+          </div>
+        ))}
+      </div>
+      <div class="text-center reveal" style="margin-top: var(--space-6);">
+        <p style="color: rgba(255,255,255,0.45); font-size: 0.8rem; margin-bottom: var(--space-2);">
+          Il menu cambia stagionalmente — contattaci per le proposte del giorno
+        </p>
+        <a href={`https://wa.me/${business.phoneLink}?text=Buongiorno%2C%20vorrei%20conoscere%20il%20menu%20del%20giorno`} target="_blank" rel="noopener" class="btn btn--whatsapp">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Menu del giorno su WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== GALLERY ====== -->
+  <section class="section gallery" id="gallery">
+    <div class="container">
+      <div class="text-center reveal" style="margin-bottom: var(--space-6);">
+        <p class="eyebrow">Galleria</p>
+        <h2>L'esperienza Tavola viva</h2>
+        <p style="max-width: 500px; margin-inline: auto;">I nostri piatti, il locale, la passione che mettiamo in ogni dettaglio.</p>
+      </div>
+      <div class="gallery__grid">
+        {galleryImages.map((img, i) => (
+          <div class="gallery__item" data-index={i}>
+            <img src={`/images/${img.file}`} onerror={`this.src='${img.url}'`} alt={img.label} loading="lazy" />
+            <div class="gallery__item-overlay">
+              <span class="gallery__item-label">{img.label}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== RECENSIONI ====== -->
+  <section class="section reviews" id="reviews">
+    <div class="container">
+      <div class="text-center" style="margin-bottom: var(--space-6);">
+        <p class="eyebrow">Dicono di noi</p>
+        <h2>Le recensioni</h2>
+      </div>
+      <div class="reviews__stats reveal">
+        <div class="review-stat">
+          <div class="review-stat__icon">★</div>
+          <div class="review-stat__number" data-counter="4.9" data-decimals="1">0</div>
+          <div class="review-stat__label">Rating Google</div>
+        </div>
+        <div class="review-stat">
+          <div class="review-stat__icon">📝</div>
+          <div class="review-stat__number" data-counter="27">0</div>
+          <div class="review-stat__label">Recensioni</div>
+        </div>
+        <div class="review-stat">
+          <div class="review-stat__icon">📸</div>
+          <div class="review-stat__number" data-counter="3700">0</div>
+          <div class="review-stat__label">Follower Instagram</div>
+        </div>
+      </div>
+      <div class="reviews__grid">
+        {reviews.map((review) => (
+          <div class="review-card">
+            <div class="review-card__stars">{'★'.repeat(review.stars)}</div>
+            <p class="review-card__text">{review.text}</p>
+            <p class="review-card__author">{review.author}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CTA ====== -->
+  <section class="section cta" id="cta">
+    <div class="container">
+      <div class="cta__content reveal">
+        <p class="eyebrow" style="color: var(--color-accent);">Prenotazione diretta</p>
+        <h2>Prenota il tuo tavolo<br>senza commissioni</h2>
+        <p>
+          Niente app, niente intermediari. Contattaci direttamente su WhatsApp 
+          o compila il modulo e ti rispondiamo noi. Zero commissioni per te.
+        </p>
+        <div class="cta__actions">
+          <a href="#contact" class="btn btn--primary">Compila il modulo</a>
+          <a href={`https://wa.me/${business.phoneLink}`} target="_blank" rel="noopener" class="btn btn--whatsapp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.811 11.811 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp diretto
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== MAPPA ====== -->
+  <section class="section map-section" id="map-section">
+    <div class="container">
+      <div class="map-section__header reveal">
+        <p class="eyebrow">Dove siamo</p>
+        <h2>Nel cuore di Velletri</h2>
+        <p>Via del Comune, 22 — a due passi dal centro storico</p>
+      </div>
+      <div id="map"></div>
+      <div class="map__actions reveal">
+        <a href="https://www.google.com/maps/dir/?api=1&destination=41.6876185,12.7781205" target="_blank" rel="noopener" class="btn btn--secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Portami lì — Apri navigatore
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CONTATTI ====== -->
+  <section class="section contact" id="contact">
+    <div class="container">
+      <div class="contact__grid">
+        <div class="contact__info reveal">
+          <p class="eyebrow">Contatti</p>
+          <h2>Prenota o chiedi info</h2>
+          <p>
+            Compila il modulo per una prenotazione. Ti reindirizziamo su WhatsApp 
+            con tutti i dettagli già pronti.
+          </p>
+          <div class="contact__details">
+            <div class="contact__detail">
+              <div class="contact__detail-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div>
+                <div class="contact__detail-label">Indirizzo</div>
+                <div class="contact__detail-value">{business.address}</div>
+              </div>
+            </div>
+            <div class="contact__detail">
+              <div class="contact__detail-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+              </div>
+              <div>
+                <div class="contact__detail-label">Telefono</div>
+                <div class="contact__detail-value"><a href={`tel:${business.phoneLink}`}>{business.phone}</a></div>
+              </div>
+            </div>
+            <div class="contact__detail">
+              <div class="contact__detail-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              </div>
+              <div>
+                <div class="contact__detail-label">Orari</div>
+                <div class="contact__detail-value">[DA INSERIRE]</div>
+              </div>
+            </div>
+            <div class="contact__detail">
+              <div class="contact__detail-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              </div>
+              <div>
+                <div class="contact__detail-label">Rating</div>
+                <div class="contact__detail-value">{business.rating}/5 · {business.reviews} recensioni</div>
+              </div>
+            </div>
+            <div class="contact__detail">
+              <div class="contact__detail-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div>
+                <div class="contact__detail-label">Prezzo medio</div>
+                <div class="contact__detail-value">{business.priceRange}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact__form-wrap reveal">
+          <h3 style="margin-bottom: var(--space-3);">Prenota un tavolo</h3>
+          <form id="contact-form">
+            <div class="form__group">
+              <label class="form__label" for="name">Nome *</label>
+              <input class="form__input" type="text" id="name" name="name" required placeholder="Il tuo nome" />
+            </div>
+            <div class="form__row">
+              <div class="form__group">
+                <label class="form__label" for="phone">Telefono</label>
+                <input class="form__input" type="tel" id="phone" name="phone" placeholder="Numero" />
+              </div>
+              <div class="form__group">
+                <label class="form__label" for="guests">Persone</label>
+                <input class="form__input" type="number" id="guests" name="guests" min="1" max="20" placeholder="2" />
+              </div>
+            </div>
+            <div class="form__group">
+              <label class="form__label" for="date">Data desiderata</label>
+              <input class="form__input" type="date" id="date" name="date" />
+            </div>
+            <div class="form__group">
+              <label class="form__label" for="message">Messaggio (intolleranze, richieste speciali)</label>
+              <textarea class="form__textarea" id="message" name="message" placeholder="Allergie, festeggiamenti, note..."></textarea>
+            </div>
+            <button type="submit" class="btn btn--primary form__submit">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.811 11.811 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Invia prenotazione su WhatsApp
+            </button>
+            <div class="form__notice"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__col">
+          <div class="footer__brand">Tavola viva</div>
+          <p style="font-size: 0.9rem; max-width: 280px;">
+            di Federico Bastianelli. Ristorante intimo a Velletri. Cucina tradizionale italiana, 
+            ingredienti freschi e stagionali.
+          </p>
+          <div class="footer__social">
+            <a href={business.instagram} target="_blank" rel="noopener" aria-label="Instagram">
+              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.692 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href={business.facebook} target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h2.047V9.43c0-2.067 1.262-3.213 3.187-3.213.927 0 1.895.166 1.895.166v2.084h-1.067c-1.052 0-1.38.654-1.38 1.324v1.592h2.347l-.375 3.47h-1.972v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h4>Menu</h4>
+          <ul>
+            <li><a href="#about">Chi siamo</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#gallery">Galleria</a></li>
+            <li><a href="#reviews">Recensioni</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Contatti</h4>
+          <ul>
+            <li><a href={`tel:${business.phoneLink}`}>{business.phone}</a></li>
+            <li><a href={`https://wa.me/${business.phoneLink}`} target="_blank" rel="noopener">WhatsApp</a></li>
+            <li>Via del Comune, 22</li>
+            <li>00049 Velletri RM</li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Info</h4>
+          <ul>
+            <li>Cena</li>
+            <li>Asporto</li>
+            <li>Eventi privati</li>
+            <li>Deliveroo</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; {new Date().getFullYear()} Tavola viva di Federico Bastianelli</p>
+        <p>Velletri · Castelli Romani</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ====== WHATSAPP FLOAT ====== -->
+  <a href={`https://wa.me/${business.phoneLink}`} class="whatsapp-float" aria-label="Chat su WhatsApp" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.811 11.811 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <!-- ====== LIGHTBOX ====== -->
+  <div class="lightbox" role="dialog" aria-label="Anteprima immagine">
+    <button class="lightbox__close" aria-label="Chiudi">&times;</button>
+    <img class="lightbox__img" src="" alt="" />
+  </div>
+</BaseLayout>
