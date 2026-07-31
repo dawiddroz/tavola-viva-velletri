@@ -46,7 +46,7 @@ const {
     .hero__title { opacity: 0; transform: translateY(100%); }
     .hero__eyebrow, .hero__subtitle { opacity: 0; transform: translateY(20px); }
     .hero__actions .btn { opacity: 0; transform: translateY(20px); }
-    .menu__card, .gallery__item, .review-card { opacity: 0; }
+    .menu__card, .gallery__item, .review-card, .reveal { opacity: 0; }
   </style>
 
   <!-- Structured Data: Restaurant -->
@@ -262,27 +262,23 @@ const {
         });
       }
 
-      // Hero animations — GSAP reveals from <head> initial state (opacity:0, translated)
+      // Hero animations — fromTo with explicit start state, zero dependency on CSS
       const heroTL = gsap.timeline({ delay: 0.2 });
-      heroTL.to('.hero__eyebrow', { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' })
-             .to('.hero__title', { yPercent: 0, opacity: 1, duration: 1.2, ease: 'power4.out' }, '-=0.5')
-             .to('.hero__subtitle', { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.5')
-             .to('.hero__actions .btn', { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power2.out' }, '-=0.4');
+      heroTL.fromTo('.hero__eyebrow', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' })
+             .fromTo('.hero__title', { yPercent: 100, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 1.2, ease: 'power4.out' }, '-=0.5')
+             .fromTo('.hero__subtitle', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.5')
+             .fromTo('.hero__actions .btn', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power2.out' }, '-=0.4');
 
-      // Scroll reveal — uses onEnter so elements are visible by default
+      // Scroll reveal — CSS sets opacity:0, GSAP animates to opacity:1
       if (typeof ScrollTrigger !== 'undefined') {
-        // Generic reveal
+        // Generic reveal (re-animates each time you scroll to it)
         gsap.utils.toArray('.reveal').forEach(el => {
           if (el.closest('#hero')) return;
           ScrollTrigger.create({
             trigger: el,
             start: 'top 85%',
-            onEnter: () => {
-              gsap.fromTo(el, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' });
-            },
-            onLeaveBack: () => {
-              gsap.set(el, { opacity: 1, y: 0 });
-            }
+            onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }),
+            onLeaveBack: () => gsap.set(el, { opacity: 0, y: 40 })
           });
         });
 
@@ -290,27 +286,24 @@ const {
         ScrollTrigger.create({
           trigger: '.menu__grid',
           start: 'top 80%',
-          onEnter: () => {
-            gsap.fromTo('.menu__card', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.12, ease: 'power2.out' });
-          }
+          onEnter: () => gsap.to('.menu__card', { opacity: 1, y: 0, duration: 0.5, stagger: 0.12, ease: 'power2.out' }),
+          onLeaveBack: () => gsap.set('.menu__card', { opacity: 0, y: 30 })
         });
 
         // Gallery stagger
         ScrollTrigger.create({
           trigger: '.gallery__grid',
           start: 'top 80%',
-          onEnter: () => {
-            gsap.fromTo('.gallery__item', { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out' });
-          }
+          onEnter: () => gsap.to('.gallery__item', { opacity: 1, scale: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out' }),
+          onLeaveBack: () => gsap.set('.gallery__item', { opacity: 0, scale: 0.8 })
         });
 
         // Review stagger
         ScrollTrigger.create({
           trigger: '.reviews__grid',
           start: 'top 80%',
-          onEnter: () => {
-            gsap.fromTo('.review-card', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out' });
-          }
+          onEnter: () => gsap.to('.review-card', { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out' }),
+          onLeaveBack: () => gsap.set('.review-card', { opacity: 0, y: 30 })
         });
 
         ScrollTrigger.refresh();
@@ -328,12 +321,6 @@ const {
 
       // GSAP runs after a tiny delay to ensure CDN scripts are ready
       setTimeout(initGSAP, 100);
-
-      // Safety net: if GSAP hasn't fired after 4s, show everything
-      setTimeout(() => {
-        const els = document.querySelectorAll('.reveal, .hero__eyebrow, .hero__title, .hero__subtitle, .hero__actions, .hero__actions .btn, .menu__card, .gallery__item, .review-card, .instagram-banner__card');
-        els.forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
-      }, 4000);
     });
   </script>
 </body>
