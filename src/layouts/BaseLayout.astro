@@ -41,6 +41,14 @@ const {
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
+  <!-- Anti-flash: set hero initial state BEFORE first paint (in <head>) -->
+  <style>
+    .hero__title { opacity: 0; transform: translateY(100%); }
+    .hero__eyebrow, .hero__subtitle { opacity: 0; transform: translateY(20px); }
+    .hero__actions .btn { opacity: 0; transform: translateY(20px); }
+    .menu__card, .gallery__item, .review-card { opacity: 0; }
+  </style>
+
   <!-- Structured Data: Restaurant -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -254,7 +262,12 @@ const {
         });
       }
 
-      // Hero animations — handled by CSS @keyframes (no flash, no dependency)
+      // Hero animations — GSAP reveals from <head> initial state (opacity:0, translated)
+      const heroTL = gsap.timeline({ delay: 0.2 });
+      heroTL.to('.hero__eyebrow', { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' })
+             .to('.hero__title', { yPercent: 0, opacity: 1, duration: 1.2, ease: 'power4.out' }, '-=0.5')
+             .to('.hero__subtitle', { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.5')
+             .to('.hero__actions .btn', { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power2.out' }, '-=0.4');
 
       // Scroll reveal — uses onEnter so elements are visible by default
       if (typeof ScrollTrigger !== 'undefined') {

@@ -267,19 +267,17 @@ p {
   transform: none;
 }
 
-/* Anti-flash: animated elements start hidden, JS reveals them */
-.menu__card,
-.gallery__item,
-.review-card {
-  opacity: 0;
-}
-
-/* Safety net: if JS fails, show everything after 3s */
+/* Safety net: if JS disabled, reveal elements */
 @media (scripting: none) {
   .menu__card,
   .gallery__item,
-  .review-card {
-    opacity: 1;
+  .review-card,
+  .hero__title,
+  .hero__eyebrow,
+  .hero__subtitle,
+  .hero__actions .btn {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
