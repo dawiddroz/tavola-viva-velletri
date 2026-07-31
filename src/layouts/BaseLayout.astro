@@ -42,7 +42,7 @@ const {
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <!-- Anti-flash: set hero initial state BEFORE first paint (in <head>) -->
-  <style>
+  <style is:global>
     .hero__title { opacity: 0; transform: translateY(100%); }
     .hero__eyebrow, .hero__subtitle { opacity: 0; transform: translateY(20px); }
     .hero__actions .btn { opacity: 0; transform: translateY(20px); }
