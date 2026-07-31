@@ -43,9 +43,6 @@ const {
 
   <!-- Anti-flash: set hero initial state BEFORE first paint (in <head>) -->
   <style is:global>
-    .hero__title { opacity: 0; transform: translateY(100%); }
-    .hero__eyebrow, .hero__subtitle { opacity: 0; transform: translateY(20px); }
-    .hero__actions .btn { opacity: 0; transform: translateY(20px); }
     .menu__card, .gallery__item, .review-card, .reveal { opacity: 0; }
   </style>
 
@@ -262,12 +259,16 @@ const {
         });
       }
 
-      // Hero animations — fromTo with explicit start state, zero dependency on CSS
+      // Hero animations — set initial state then animate (no CSS conflict)
+      gsap.set('.hero__title, .hero__eyebrow, .hero__subtitle, .hero__actions .btn', { opacity: 0 });
+      gsap.set('.hero__title', { yPercent: 100 });
+      gsap.set('.hero__eyebrow, .hero__subtitle, .hero__actions .btn', { y: 20 });
+
       const heroTL = gsap.timeline({ delay: 0.2 });
-      heroTL.fromTo('.hero__eyebrow', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' })
-             .fromTo('.hero__title', { yPercent: 100, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 1.2, ease: 'power4.out' }, '-=0.5')
-             .fromTo('.hero__subtitle', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.5')
-             .fromTo('.hero__actions .btn', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power2.out' }, '-=0.4');
+      heroTL.to('.hero__eyebrow', { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' })
+             .to('.hero__title', { yPercent: 0, opacity: 1, duration: 1.2, ease: 'power4.out' }, '-=0.5')
+             .to('.hero__subtitle', { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.5')
+             .to('.hero__actions .btn', { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power2.out' }, '-=0.4');
 
       // Scroll reveal — CSS sets opacity:0, GSAP animates to opacity:1
       if (typeof ScrollTrigger !== 'undefined') {
