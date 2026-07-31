@@ -58,8 +58,12 @@
   text-transform: uppercase;
   color: var(--color-accent);
   margin-bottom: var(--space-3);
-  opacity: 0; /* hidden until GSAP reveal */
-  transform: translateY(20px);
+  animation: heroFadeIn 0.8s 0.1s ease both;
+}
+
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .hero__title {
@@ -69,7 +73,14 @@
   color: var(--color-white);
   line-height: 1.05;
   margin-bottom: var(--space-4);
-  opacity: 0; /* hidden until GSAP reveal */
+  animation: heroReveal 1.2s 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes heroReveal {
+  from { opacity: 0; transform: translateY(60px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+  margin-bottom: var(--space-4);
 }
 
 .hero__title em {
@@ -89,7 +100,6 @@
   margin-inline: auto;
   margin-bottom: var(--space-5);
   line-height: 1.6;
-  opacity: 0; /* hidden until GSAP reveal */
   transform: translateY(20px);
 }
 
@@ -98,7 +108,6 @@
   flex-wrap: wrap;
   gap: var(--space-2);
   justify-content: center;
-  opacity: 0; /* hidden until GSAP reveal */
 }
 
 .hero__scroll {

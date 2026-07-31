@@ -254,13 +254,7 @@ const {
         });
       }
 
-      // Hero animations — CSS sets initial state (opacity:0, translateY), GSAP reveals
-      const heroTL = gsap.timeline({ delay: 0.2 });
-      heroTL.to('.hero__eyebrow', { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' })
-             .to('.hero__title', { yPercent: 0, opacity: 1, duration: 1.0, ease: 'power4.out' }, '-=0.5')
-             .to('.hero__subtitle', { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.5')
-             .to('.hero__actions', { opacity: 1, duration: 0.5, ease: 'power2.out' }, '-=0.4')
-             .to('.hero__actions .btn', { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power2.out' }, '-=0.3');
+      // Hero animations — handled by CSS @keyframes (no flash, no dependency)
 
       // Scroll reveal — uses onEnter so elements are visible by default
       if (typeof ScrollTrigger !== 'undefined') {
